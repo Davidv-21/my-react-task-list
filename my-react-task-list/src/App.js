@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 import Header from './components/Header';
 import TaskList from './components/TaskList';
 
 const App = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, name: 'Salir a caminar', completed: false },
-    { id: 2, name: 'Lavar ropa', completed: false },
-    { id: 3, name: 'Hacer trabajos', completed: false },
-    { id: 4, name: 'Practicar ejercicios', completed: false }
-  ]);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (storedTasks) {
+      setTasks(storedTasks);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
   const [newTaskName, setNewTaskName] = useState('');
 
   const handleAddTask = () => {
